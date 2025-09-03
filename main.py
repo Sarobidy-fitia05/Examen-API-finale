@@ -3,10 +3,6 @@ from pydantic import BaseModel
 from typing import List
 app = FastAPI()
 
-@app.get("/ping")
-def ping():
-    return {"message": "pong"}
-
 class characteristic(BaseModel):
     max_speed: int
     max_fuel_capacity: int
@@ -18,12 +14,20 @@ class Cars(BaseModel):
     model: str
     characteristic: characteristic
     
-
 Cars = []
-@app.post("/cars/", response_model=Cars)
+
+@app.get("/ping")
+def ping():
+    return {"message": "pong"}
+
+
+
+@app.post("/cars/", status_code=201)
 def creer_car(cars: Cars):
     Cars.append(cars)
     return cars 
+
+
 
 
 @app.get("/cars/",  response_model=List[Cars])
