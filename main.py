@@ -23,7 +23,7 @@ def ping():
 
 
 @app.post("/cars/", status_code=201)
-def creer_car(cars: Cars):
+async def creer_car(cars: Cars):
     Cars.append(cars)
     return cars 
 
@@ -31,15 +31,15 @@ def creer_car(cars: Cars):
 
 
 @app.get("/cars/",  response_model=List[Cars])
-def recuperation():
+async def recuperation():
     return Cars
 
 
 @app.get("/phones/{car_id}", response_model=Cars)
 async def get_phone(car_id: str):
-    for Cars in Cars:
-        if Cars.identifier == car_id:
-            return Cars
+    for cars in cars:
+        if cars.identifier == car_id:
+            return cars
     raise HTTPException(status_code=404, detail=f"Le phone comportant l'id {car_id}  n'existe pas")
 
 
