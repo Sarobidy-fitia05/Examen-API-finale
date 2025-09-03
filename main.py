@@ -7,11 +7,16 @@ app = FastAPI()
 def ping():
     return {"message": "pong"}
 
+class characteristic(BaseModel):
+    max_speed: int
+    max_fuel_capacity: int
+
 
 class Cars(BaseModel):
     id: str
     brand: str
     model: str
+    characteristic: characteristic
     
 
 Cars = []
@@ -31,6 +36,13 @@ def recuperation():
 def  recuperation(id:int):
     if id < len(Cars):
         return Cars[id]
-    raise HTTPException(status_code=404 , detail="Le phone comportant l'id fourni n'existe pas!")
+    raise HTTPException(status_code=404 , detail=f"Le phone comportant l'id fourni n'existe pas!")
 
 
+@app.put("/cars/{id}/characteristics", response_model=cars)
+async def update_phone_characteristics(id: str, characteristic: Characteristic):
+    for car in Cars:
+        if car.identifier == id:
+            car.characteristics = characteristics
+            return car
+    raise HTTPException(status_code=404, detail=f"Le phone comportant l'id fourni n'existe pas")
