@@ -31,18 +31,19 @@ def recuperation():
     return Cars
 
 
+@app.get("/phones/{car_id}", response_model=Cars)
+async def get_phone(car_id: str):
+    for Cars in Cars:
+        if Cars.identifier == car_id:
+            return Cars
+    raise HTTPException(status_code=404, detail=f"Le phone comportant l'id {car_id}  n'existe pas")
 
-@app.get("/cars/{id}",  response_model=List[Cars])
-def  recuperation(id:int):
-    if id < len(Cars):
-        return Cars[id]
-    raise HTTPException(status_code=404 , detail=f"Le phone comportant l'id fourni n'existe pas!")
 
+@app.put("/phones/{car_id}/characteristics", response_model=Cars)
+async def update_phone_characteristics(phone_id: str, characteristics: Characteristic):
+    for cars in Cars:
+        if cars.identifier == car_id:
+            cars.characteristic = characteristic
+            return cars
+    raise HTTPException(status_code=404, detail=f"Le phone comportant l'id {car_id}  n'existe pas")
 
-@app.put("/cars/{id}/characteristics", response_model=cars)
-async def update_phone_characteristics(id: str, characteristic: Characteristic):
-    for car in Cars:
-        if car.identifier == id:
-            car.characteristics = characteristics
-            return car
-    raise HTTPException(status_code=404, detail=f"Le phone comportant l'id fourni n'existe pas")
